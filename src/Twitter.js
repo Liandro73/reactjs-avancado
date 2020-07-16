@@ -1,48 +1,44 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 
-class Twitter extends Component {
-
-    state = {
-        tweet: 'title'
-    }
-
-    componentDidMount() {
-        const { posts, loading } = this.props
-        console.log('componentDidMount', posts)
-        console.log('componentDidMount:loading', loading)
-    }
-
-    componentDidUpdate( prevProps ) {
-        const { loading } = this.props
-        if (this.props.loading !== prevProps.loading) {
-            console.log('componentDidMount:loading', loading)
-        }
-    }
-
-    componentWillUnmount() {
-        console.log('componentWillUnmount: fui removido :(')
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.tweet !== nextState.tweet
-    }
-
-    tweet = () => {
-        this.setState({
-            tweet: true
-        })
-    }
-
-    render() {
-        const { posts } = this.props
-        console.log('render', posts)
-        return (
-            <div>
-                <button onClick={this.tweet}>Re-render</button>
-                tests
-            </div>
-        )
-    }
+const areEqual = (prevProps, nextProps) => {
+    return prevProps.loading === nextProps.loading
 }
 
-export default Twitter;
+function Twitter(props) {
+
+    const { loading } = props
+    const [tweet, setweet] = useState('title')
+
+    // componentDidMount
+    useEffect(() => {
+        const { posts, loading } = props
+        console.log('componentDidMount', posts)
+        console.log('componentDidMount:loading', loading)
+    }, [])
+
+    // componentDidUpdate
+    useEffect(() => {
+        console.log('componentDidMount:loading', loading)
+    }, [loading])
+
+    // componentWillUnmount
+    useEffect(() => {
+        return () => {
+            console.log('componentWillUnmount: fui removido :(')
+        }
+    }, [])
+
+    const handleTtweet = () => {
+        setweet('Tweet atualizado')
+    }
+
+    console.log('Tweet atualizado', tweet)
+    return (
+        <div>
+            <button onClick={handleTtweet}>Re-render</button>
+            tests
+        </div>
+    )
+}
+
+export default memo(Twitter, areEqual);
