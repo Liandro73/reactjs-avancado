@@ -1,17 +1,22 @@
-import React from 'react';
-import PetShop from './PetShop';
+import React, { useRef } from 'react';
 
 function App () {
-  const handleClick = () => {
-    console.log('Iniciando o banho...')
+  const inputRef = useRef()
+
+  const hadleClick = () => {
+    inputRef.current.focus()
+    console.log('inputRef.current', inputRef.current)
   }
 
   return (
-    <PetShop 
-      dogs={2}
-      custumerName='Dernival Liandro'
-      onClick={handleClick}
-    />
+    <>
+      <h1>Valor de count</h1>
+      Foco: <input ref={inputRef} />
+      <br />
+      <br />
+      <br />
+      <button onClick={hadleClick} >Focar</button>
+    </>
   )
 }
 
